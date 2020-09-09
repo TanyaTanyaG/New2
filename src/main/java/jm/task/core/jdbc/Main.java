@@ -1,8 +1,11 @@
 package jm.task.core.jdbc;
+
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
-import java.lang.Object;
-import java.sql.*;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
@@ -10,8 +13,7 @@ public class Main {
         String query = "select*from user";
         try {
 
-            Statement statement;
-            statement = Util.getConnection().createStatement();
+            Statement statement = Util.getConnection().createStatement();
             ResultSet  resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 User user = new User();
