@@ -1,24 +1,17 @@
 package jm.task.core.jdbc;
-
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import java.lang.Object;
+import java.sql.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-@SuppressWarnings("ALL")
 public class Main {
     public static void main(String[] args) throws SQLException {
-        try {
-            new Util();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        Util util = new Util ();
         String query = "select*from user";
+        try {
 
-
-            Statement statement= Util.getConnection().createStatement();
+            Statement statement;
+            statement = Util.getConnection().createStatement();
             ResultSet  resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 User user = new User();
@@ -28,7 +21,8 @@ public class Main {
              user.setAge(resultSet.getByte(4));
              System.out.println(user);
             }
-
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
-
+}
