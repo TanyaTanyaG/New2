@@ -1,30 +1,44 @@
 package jm.task.core.jdbc;
 
+import com.mysql.fabric.jdbc.FabricMySQLDriver;
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import sun.security.util.Password;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Util util = new Util ();
-        String query = "select*from user";
+    private static final String URL = "jdbc:mysql://localhost:3306";
+    private static final String LoginName = "root";
+    private  static final String Password = "rootroot";
+    public static void main(String[] args) throws SQLException {
+        Connection connection = null;
+        Driver driver;
         try {
-
-            Statement statement = Util.getConnection().createStatement();
-            ResultSet  resultSet = statement.executeQuery(query);
-            while (resultSet.next()) {
-                User user = new User();
-             user.setId(resultSet.getLong(1));
-             user.setName(resultSet.getString(2));
-             user.setLastName(resultSet.getString(3));
-             user.setAge(resultSet.getByte(4));
-             System.out.println(user);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            driver = new FabricMySQLDriver();
+}
+        catch (SQLException ex){
+            System.out.println("Произошла ошибка при создании драйвера");
+            return;
         }
+        try {
+            DriverManager.registerDriver(driver);
+        }
+        catch (SQLException ex) {
+            System.out.println ("Не удалось зарегистрировать драйвер!");
+            return;
+        }
+        try {
+            connection = DriverManager.getConnection(URL, LoginName, Password);
+        }
+catch (SQLException ex){
+            System.out.println("Не удвлось создать соединение!");
+            return;
+}
+finally {
+            if (connection != null)
+                connection.close();
+        }
+
     }
 }
